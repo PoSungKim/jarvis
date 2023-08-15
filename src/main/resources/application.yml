@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    active: mysql
+  batch:
+    jdbc:
+      initialize-schema: embedded
+
+mybatis:
+  mapper-locations: mybatis/mapper/**/*.xml
+  config-location: mybatis/config.xml
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    hikari:
+      pool-name: h2Pool
+      jdbc-url: jdbc:h2:mem:jarvis;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+  h2:
+    console:
+      enabled: true
+#    job:
+#      names: ${job.name:NONE}
+#      enabled: false
+---
+
+spring:
+  config:
+    activate:
+      on-profile: mysqlPool
+  datasource:
+    hikari:
+      pool-name: mysql
+      jdbc-url: jdbc:mysql://localhost:3306/jarvis?useUnicode=true&characterEncoding=utf8
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: root
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      names: ${job.name:NONE}
+#      enabled: false
